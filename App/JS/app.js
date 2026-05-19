@@ -85,11 +85,11 @@ function renderCart(){
   let total = 0;
   cart.forEach(it=>{
     const row = document.createElement('div');
-    row.textContent = `${it.name} x ${it.qty} — $${(it.price*it.qty).toFixed(2)}`;
+    row.textContent = `${it.name} x ${it.qty} — ৳${(it.price*it.qty).toFixed(2)}`;
     el.appendChild(row);
     total += it.price*it.qty;
   });
-  totalEl.textContent = 'Total: $' + total.toFixed(2);
+  totalEl.textContent = 'Total: ৳' + total.toFixed(2);
 }
 
 function placeOrder(){
@@ -117,7 +117,7 @@ function renderOrders(containerId, all=false){
   if (!list.length) { container.textContent = 'No orders found.'; return; }
   list.slice().reverse().forEach(o=>{
     const div = document.createElement('div'); div.className = 'order';
-    div.innerHTML = `<div><strong>Order #${o.id}</strong> — ${new Date(o.date).toLocaleString()} — $${o.total.toFixed(2)} — by ${o.user}</div>`;
+    div.innerHTML = `<div><strong>Order #${o.id}</strong> — ${new Date(o.date).toLocaleString()} — ৳${o.total.toFixed(2)} — by ${o.user}</div>`;
     o.items.forEach(it=>{ const r = document.createElement('div'); r.textContent = `${it.name} x ${it.qty}`; div.appendChild(r); });
     container.appendChild(div);
   });
@@ -145,7 +145,7 @@ function renderAdminProducts(containerId){
   container.innerHTML = '';
   products.forEach(p=>{
     const row = document.createElement('div'); row.className = 'admin-row';
-    row.innerHTML = `<div>${p.name} — $${p.price.toFixed(2)}</div>`;
+    row.innerHTML = `<div>${p.name} — ৳${p.price.toFixed(2)}</div>`;
     const del = document.createElement('button'); del.textContent = 'Delete'; del.addEventListener('click', ()=> deleteProduct(p.id));
     row.appendChild(del);
     container.appendChild(row);

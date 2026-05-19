@@ -1,0 +1,29 @@
+#ordersList .order {
+  background: var(--card);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+.order-summary {
+  background: var(--bg);
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 12px;
+}
+
+.order-summary .order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.order-summary .order-meta {
+  display: flex;
+  gap: 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}

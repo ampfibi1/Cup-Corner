@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Cup Corner — Dashboard</title>
-  <link rel="stylesheet" href="CSS/login.css">
-  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/base.css">
+  <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 <body>
   <header>
@@ -19,53 +19,64 @@
 
   <main>
     <section class="dashboard-hero">
-      <div class="hero-card">
-        <div class="hero-copy">
-          <span class="eyebrow">Dashboard</span>
-          <h1 id="heroTitle">Welcome to Cup Corner</h1>
-          <p class="muted">Your Coffee Shop control center for orders, products, and sales performance.</p>
-          <div class="hero-actions">
-            <a class="nav" href="menu.html">Browse Menu</a>
-            <a class="nav" href="orders.html">View Orders</a>
-          </div>
+      <div class="hero-content">
+        <span class="eyebrow">Cup Corner</span>
+        <h1 id="heroTitle">Welcome back to your coffee shop.</h1>
+        <p id="heroSubtitle" class="muted">Manage orders, menu items, and daily sales from a modern dashboard designed for cafes.</p>
+        <div id="heroLinks" class="hero-links">
+          <a class="nav" href="menu.html">Order Now</a>
+          <a class="nav" href="orders.html">My Orders</a>
         </div>
-        <div class="hero-stats">
-          <div class="stat-card">
-            <span class="stat-label">Active Orders</span>
-            <strong id="statOrders">0</strong>
+      </div>
+      <div class="hero-panel">
+        <div class="user-card">
+          <div class="user-card-top">
+            <span>Hello,</span>
+            <strong id="userName">Guest</strong>
           </div>
-          <div class="stat-card">
-            <span class="stat-label">Menu Items</span>
-            <strong id="statProducts">0</strong>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Revenue</span>
-            <strong id="statRevenue">$0.00</strong>
+          <div id="userRole" class="user-role">Visitor</div>
+          <div class="user-meta">
+            <div><span>Today's menu</span><strong id="statProducts">0</strong></div>
+            <div><span>Orders</span><strong id="statOrders">0</strong></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="dashboard-grid">
-      <article class="overview-card">
-        <div class="card-header">
-          <h2>Quick Actions</h2>
-          <span class="tag">Fast access</span>
-        </div>
-        <div class="action-buttons">
-          <a class="btn secondary" href="menu.html">Add Order</a>
-          <a class="btn secondary" href="admin.html">Manage Products</a>
-          <a class="btn secondary" href="orders.html">Review Sales</a>
-        </div>
-      </article>
+    <section id="dashboardAdmin" class="dashboard-cards" style="display:none">
+      <div class="dashboard-card">
+        <span class="card-label">Menu Items</span>
+        <strong id="menuCount">0</strong>
+        <p>Manage every coffee and beverage on the menu.</p>
+      </div>
+      <div class="dashboard-card">
+        <span class="card-label">Orders</span>
+        <strong id="activeOrders">0</strong>
+        <p>Track active orders and completed sales.</p>
+      </div>
+      <div class="dashboard-card">
+        <span class="card-label">Revenue</span>
+        <strong id="dashboardRevenue">৳0.00</strong>
+        <p>Today's total revenue from all transactions.</p>
+      </div>
+    </section>
 
-      <article class="orders-card">
-        <div class="card-header">
-          <h2>Recent Orders</h2>
-          <span class="tag">Latest activity</span>
-        </div>
-        <div id="dashboardOrders"></div>
-      </article>
+    <section id="dashboardUser" class="dashboard-cards" style="display:none">
+      <div class="dashboard-card">
+        <span class="card-label">Order Now</span>
+        <strong>Quick coffee</strong>
+        <p>Browse the menu and add your favorite drink to the cart.</p>
+      </div>
+      <div class="dashboard-card">
+        <span class="card-label">My Orders</span>
+        <strong>Track progress</strong>
+        <p>Review your placed orders and delivery status anytime.</p>
+      </div>
+      <div class="dashboard-card">
+        <span class="card-label">Offers</span>
+        <strong>Stay updated</strong>
+        <p>See the latest coffee deals and new arrivals.</p>
+      </div>
     </section>
 
     <div class="logout-row">
@@ -76,52 +87,45 @@
   <script src="JS/app.js"></script>
   <script>
     const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
-    const userArea = document.getElementById('heroTitle');
+    const userName = document.getElementById('userName');
+    const userRole = document.getElementById('userRole');
+    const adminLink = document.getElementById('adminLink');
+    const adminSection = document.getElementById('dashboardAdmin');
+    const userSection = document.getElementById('dashboardUser');
+
     if (!user) {
       window.location.href = 'loginpage.html';
     } else {
-      userArea.textContent = `Welcome back, ${user.username}`;
-      if (user.role === 'admin') document.getElementById('adminLink').style.display = 'inline-block';
+      userName.textContent = user.username;
+      const isAdmin = user.role === 'admin';
+      userRole.textContent = isAdmin ? 'Administrator' : 'Barista';
+      const heroLinks = document.getElementById('heroLinks');
+      if (isAdmin) {
+        adminLink.style.display = 'inline-block';
+        adminSection.style.display = 'grid';
+        heroLinks.innerHTML = '<a class="nav" href="admin.html">Manage Menu</a><a class="nav" href="orders.html">View Orders</a>';
+        document.getElementById('heroTitle').textContent = 'Welcome back, Manager.';
+        document.getElementById('heroSubtitle').textContent = 'Monitor your cafe, update the menu, and keep sales flowing smoothly.';
+      } else {
+        userSection.style.display = 'grid';
+        heroLinks.innerHTML = '<a class="nav" href="menu.html">Order Now</a><a class="nav" href="orders.html">My Orders</a>';
+        document.getElementById('heroTitle').textContent = 'Ready for a fresh cup?';
+        document.getElementById('heroSubtitle').textContent = 'Browse the menu, place an order, and track your drinks.';
+      }
     }
 
-    function updateDashboardStats() {
+    function refreshDashboard() {
       const orders = JSON.parse(localStorage.getItem('cc_orders') || '[]');
       const products = JSON.parse(localStorage.getItem('cc_products') || '[]');
-      const activeOrders = orders.filter(o => o.status !== 'completed').length || orders.length;
       const revenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
-      document.getElementById('statOrders').textContent = activeOrders;
+      document.getElementById('statOrders').textContent = orders.length;
       document.getElementById('statProducts').textContent = products.length;
-      document.getElementById('statRevenue').textContent = `$${revenue.toFixed(2)}`;
+      document.getElementById('menuCount').textContent = products.length;
+      document.getElementById('activeOrders').textContent = orders.length;
+      document.getElementById('dashboardRevenue').textContent = `৳${revenue.toFixed(2)}`;
     }
 
-    function renderDashboardOrders() {
-      const orders = JSON.parse(localStorage.getItem('cc_orders') || '[]').slice(-4).reverse();
-      const container = document.getElementById('dashboardOrders');
-      if (!container) return;
-      container.innerHTML = '';
-      if (!orders.length) {
-        container.innerHTML = '<p class="empty-state">No orders placed yet.</p>';
-        return;
-      }
-      orders.forEach(order => {
-        const card = document.createElement('div');
-        card.className = 'order-summary';
-        card.innerHTML = `
-          <div class="order-top">
-            <strong>Order #${order.id}</strong>
-            <span>${new Date(order.date).toLocaleDateString()}</span>
-          </div>
-          <div class="order-meta">
-            <span>${order.items.length} items</span>
-            <span>$${order.total.toFixed(2)}</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    updateDashboardStats();
-    renderDashboardOrders();
+    refreshDashboard();
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('cc_user');
