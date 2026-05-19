@@ -13,23 +13,62 @@
     <nav>
       <a href="menu.html">Menu</a>
       <a href="orders.html">Orders</a>
+      <a id="adminLink" href="admin.html" style="display:none">Admin</a>
     </nav>
   </header>
 
   <main>
-    <div class="hero">
-      <div>
-        <h2>Welcome to Cup Corner</h2>
-        <p class="muted">Simple demo Coffee Shop management UI — order, manage products, and view orders.</p>
-        <div style="margin-top:12px">
-          <a class="nav" href="menu.html">Start Ordering</a>
-          <a class="nav" href="admin.html" id="adminLink" style="display:none">Admin Panel</a>
+    <section class="dashboard-hero">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <span class="eyebrow">Dashboard</span>
+          <h1 id="heroTitle">Welcome to Cup Corner</h1>
+          <p class="muted">Your Coffee Shop control center for orders, products, and sales performance.</p>
+          <div class="hero-actions">
+            <a class="nav" href="menu.html">Browse Menu</a>
+            <a class="nav" href="orders.html">View Orders</a>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-label">Active Orders</span>
+            <strong id="statOrders">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Menu Items</span>
+            <strong id="statProducts">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Revenue</span>
+            <strong id="statRevenue">$0.00</strong>
+          </div>
         </div>
       </div>
-      <div id="user-area"></div>
-    </div>
+    </section>
 
-    <div style="margin-top:18px">
+    <section class="dashboard-grid">
+      <article class="overview-card">
+        <div class="card-header">
+          <h2>Quick Actions</h2>
+          <span class="tag">Fast access</span>
+        </div>
+        <div class="action-buttons">
+          <a class="btn secondary" href="menu.html">Add Order</a>
+          <a class="btn secondary" href="admin.html">Manage Products</a>
+          <a class="btn secondary" href="orders.html">Review Sales</a>
+        </div>
+      </article>
+
+      <article class="orders-card">
+        <div class="card-header">
+          <h2>Recent Orders</h2>
+          <span class="tag">Latest activity</span>
+        </div>
+        <div id="dashboardOrders"></div>
+      </article>
+    </section>
+
+    <div class="logout-row">
       <button id="logoutBtn" class="btn">Logout</button>
     </div>
   </main>
@@ -37,11 +76,52 @@
   <script src="JS/app.js"></script>
   <script>
     const user = JSON.parse(localStorage.getItem('cc_user') || 'null');
-    const userArea = document.getElementById('user-area');
-    if (user) userArea.textContent = 'Signed in as: ' + user.username;
-    else window.location.href = 'loginpage.html';
+    const userArea = document.getElementById('heroTitle');
+    if (!user) {
+      window.location.href = 'loginpage.html';
+    } else {
+      userArea.textContent = `Welcome back, ${user.username}`;
+      if (user.role === 'admin') document.getElementById('adminLink').style.display = 'inline-block';
+    }
 
-    if (user && user.role === 'admin') document.getElementById('adminLink').style.display = 'inline-block';
+    function updateDashboardStats() {
+      const orders = JSON.parse(localStorage.getItem('cc_orders') || '[]');
+      const products = JSON.parse(localStorage.getItem('cc_products') || '[]');
+      const activeOrders = orders.filter(o => o.status !== 'completed').length || orders.length;
+      const revenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
+      document.getElementById('statOrders').textContent = activeOrders;
+      document.getElementById('statProducts').textContent = products.length;
+      document.getElementById('statRevenue').textContent = `$${revenue.toFixed(2)}`;
+    }
+
+    function renderDashboardOrders() {
+      const orders = JSON.parse(localStorage.getItem('cc_orders') || '[]').slice(-4).reverse();
+      const container = document.getElementById('dashboardOrders');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!orders.length) {
+        container.innerHTML = '<p class="empty-state">No orders placed yet.</p>';
+        return;
+      }
+      orders.forEach(order => {
+        const card = document.createElement('div');
+        card.className = 'order-summary';
+        card.innerHTML = `
+          <div class="order-top">
+            <strong>Order #${order.id}</strong>
+            <span>${new Date(order.date).toLocaleDateString()}</span>
+          </div>
+          <div class="order-meta">
+            <span>${order.items.length} items</span>
+            <span>$${order.total.toFixed(2)}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    updateDashboardStats();
+    renderDashboardOrders();
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('cc_user');
