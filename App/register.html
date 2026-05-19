@@ -18,13 +18,17 @@
       <h2>Create an account</h2>
       <form id="registerForm">
         <label>Username</label>
-        <input id="r_username" type="text" required>
+        <input id="r_username" type="text" >
+        <span id="name-error" style="color: red;font-size:13px;"></span>
         <label>Email</label>
         <input id="r_email" type="email">
+        <span id="email-error" style="color: red;font-size:13px;"></span>
         <label>Password</label>
-        <input id="r_password" type="password" required>
+        <input id="r_password" type="password" >
         <label>Confirm Password</label>
-        <input id="r_password2" type="password" required>
+        <input id="r_password2" type="password">
+        <span id="password-error" style="color: red;font-size:13px;"></span>
+        <span id="both-error" style="color: red;font-size:13px;"></span>
         <div class="actions">
           <button type="submit" class="btn">Register</button>
           <a href="loginpage.html" class="btn" style="background:#eee;color:#111">Cancel</a>
@@ -35,20 +39,7 @@
 
   <footer>Already have an account? <a href="loginpage.html">Sign in</a></footer>
 
+  <script src="JS/regvalidation.js"></script>
   <script src="JS/app.js"></script>
-  <script>
-    document.getElementById('registerForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const u = document.getElementById('r_username').value.trim();
-      const p = document.getElementById('r_password').value;
-      const p2 = document.getElementById('r_password2').value;
-      if (!u || !p) return alert('Username and password required');
-      if (p !== p2) return alert('Passwords do not match');
-      const result = registerUser({ username: u, password: p, role: 'user' });
-      if (!result.success) return alert(result.message);
-      alert('Registration successful — please login');
-      window.location.href = 'loginpage.html';
-    });
-  </script>
 </body>
 </html>

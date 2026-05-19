@@ -22,7 +22,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         return;
     }
 
-    alert('Invalid username or password. Please register first.');
+    const bothError = document.getElementById('both-error');
+    bothError.innerHTML = 'Invalid username or password. Please register first.';
 });
 
 function validateLogin() {

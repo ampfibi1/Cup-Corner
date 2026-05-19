@@ -35,10 +35,13 @@ function initUsers(){
 function getUsers(){ return JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]'); }
 function saveUsers(list){ localStorage.setItem(STORAGE_USERS, JSON.stringify(list)); }
 
-function registerUser({username, password, role='user'}){
+function registerUser({username, email, password, role='user'}){
   const users = getUsers();
-  if (users.find(u=>u.username===username)) return { success:false, message:'Username already exists' };
-  users.push({ username, password, role });
+  if (users.find(u=>u.username===username)) 
+    return { success:false, message:'Username already exists' };
+  if (users.find(u=>u.email && u.email.toLowerCase()===email.toLowerCase())) 
+    return { success:false, message:'Email already registered' };
+  users.push({ username, email, password, role });
   saveUsers(users);
   return { success:true };
 }
@@ -53,7 +56,7 @@ function renderProducts(containerId){
   container.innerHTML = '';
   products.forEach(p => {
     const el = document.createElement('div'); el.className = 'product';
-    el.innerHTML = `<strong>${p.name}</strong><div>$${p.price.toFixed(2)}</div><button data-id="${p.id}">Add</button>`;
+    el.innerHTML = `<strong>${p.name}</strong><div>৳${p.price.toFixed(2)}</div><button data-id="${p.id}">Add</button>`;
     el.querySelector('button').addEventListener('click', ()=> addToCart(p.id));
     container.appendChild(el);
   });
