@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cup-Corner — Sign In</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/login.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <img src="assets/logo.png" alt="Cup Corner logo" style="height:32px;"> 
+            <div style="font-weight:700;margin-left:6px;">Cup Corner</div>
+        </div>
+        <nav>
+            <a href="menu.html">Menu</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-wrap" style="max-width:420px;margin:48px auto;padding:26px;">
+            <div style="text-align:center;margin-bottom:8px">
+                <h2 style="margin:0;font-size:20px">Welcome back</h2>
+                <div style="color:var(--muted);font-size:13px;margin-top:6px">Sign in to continue to Cup Corner</div>
+            </div>
+
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="your username">
+                <span id="name-error" style="color: red;font-size:13px;"></span>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="your password">
+                <span id="password-error" style="color: red;font-size:13px;"></span>
+
+                <div class="actions" style="margin-top:18px">
+                    <button id="loginBtn" class="btn" type="submit">Sign In</button>
+                    <a href="register.html" style="display:inline-block;padding:10px 12px;border-radius:8px;background:#f3f4f6;text-decoration:none;color:#111;margin-left:8px">Register</a>
+                </div>
+
+                <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">
+                    <a href="#" style="color:var(--accent);text-decoration:none">Forgot password?</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <small style="color:var(--muted)">Built with ☕ Cup Corner</small>
+    </footer>
+
+    <script src="JS/loginvalidation.js"></script>
+</body>
+</html>

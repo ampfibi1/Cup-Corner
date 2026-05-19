@@ -1,0 +1,24 @@
+:root{
+	--bg:#f6f7fb; --card:#ffffff; --accent:#4CAF50; --muted:#6b7280; --maxw:1100px;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:#111;margin:0}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:linear-gradient(90deg,#fff,#fbfbfb);box-shadow:0 1px 0 rgba(0,0,0,0.04)}
+header .brand{display:flex;align-items:center;gap:12px}
+header .brand img{height:40px}
+header nav a{margin-left:12px;padding:8px 12px;background:var(--accent);color:#fff;border-radius:6px;text-decoration:none;font-weight:600}
+main{max-width:var(--maxw);margin:28px auto;padding:18px}
+.hero{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#fff, #fafafa);padding:18px;border-radius:12px;box-shadow:0 4px 12px rgba(15,15,15,0.03)}
+.nav a{display:inline-block;margin-right:12px;padding:8px 12px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none}
+#products{display:flex;flex-wrap:wrap;gap:16px;margin-top:18px}
+.product{background:var(--card);padding:14px;border:1px solid rgba(0,0,0,0.04);border-radius:10px;width:220px;box-shadow:0 6px 18px rgba(17,24,39,0.03)}
+.product h3{margin:0 0 8px 0}
+.product .price{color:var(--muted);font-weight:700}
+.product button{margin-top:12px;padding:8px 10px;border-radius:8px;background:#0ea5a4;border:none;color:#fff;cursor:pointer}
+#cart{margin-top:20px;background:var(--card);padding:16px;border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
+#ordersList .order{background:var(--card);padding:12px;margin-bottom:12px;border-radius:10px}
+.admin-row{display:flex;gap:8px;align-items:center}
+.form-row{display:flex;gap:8px;margin-top:8px}
+input[type="text"], input[type="password"], input[type="number"], input[type="email"]{padding:10px;border-radius:8px;border:1px solid #e6e6e6;width:100%}
+button.btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted)}
